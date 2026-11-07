@@ -227,7 +227,7 @@
             <p class="callout__head"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M9.5 13v4M12 13v4M14.5 13v4"/></svg> Start here</p>
             <p class="callout__lead"><strong>Have your escrow letter handy.</strong> The checker reads it and looks up your county value.</p>
             <a class="x-cta" href="./check/">Open the free checker</a>
-            <button class="btn" type="button" data-video-open>Watch the narrated video</button>
+            <button class="btn" type="button" data-video-open>Watch: why your payment went up</button>
           </aside>
         </section>
 
@@ -246,7 +246,7 @@
           <div class="x-ctas">
             <button class="ht-videobtn" type="button" data-video-open aria-haspopup="dialog">
               <span class="ht-videobtn__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
-              <span>Watch the narrated video<small>1 minute 30 seconds, with sound</small></span>
+              <span>Watch: why your payment went up<small>1 minute 30 seconds, with sound</small></span>
             </button>
           </div>
           <h3 class="x-silent-h" style="margin:clamp(20px,3vw,32px) 0 8px;font:var(--type-label)">Silent preview: step through at your own pace</h3>
@@ -351,7 +351,7 @@
               <span class="x-time" id="xtime">0:00 / 1:00</span>
             </div>
           </div>
-          <p class="fineprint">Silent preview, no sound. Tap "Watch the narrated video" for the full voice-over.</p>
+          <p class="fineprint">Silent preview, no sound. Tap "Watch: why your payment went up" for the full voice-over.</p>
         </section>
 
         <section class="section" id="basics" data-nav="Basics">
@@ -683,9 +683,9 @@
       </footer>
     </div>
     <dialog class="ht-vmodal" id="videoModal" aria-labelledby="videoTitle">
-      <h2 id="videoTitle">HomeTally: narrated explainer</h2>
+      <h2 id="videoTitle">Watch: why your payment went up</h2>
       <button type="button" class="ht-x" data-video-close aria-label="Close video">×</button>
-      <video id="videoEl" controls playsinline preload="none" poster="explainer_poster.jpg" width="1920" height="1080"></video>
+      <video id="videoEl" controls playsinline preload="none" poster="explainer_poster.jpg?v=ht2" width="1920" height="1080"></video>
     </dialog>
     <script src="hark.js"></script>
     <script src="config.js"></script>
@@ -786,7 +786,7 @@
         var vModal = document.getElementById("videoModal"), vEl = document.getElementById("videoEl"), vOpener = null;
         function vOpen(e) {
           vOpener = e && e.currentTarget;
-          if (!vEl.getAttribute("src")) { vEl.setAttribute("src", "explainer.mp4"); vEl.preload = "auto"; }
+          if (!vEl.getAttribute("src")) { vEl.setAttribute("src", "explainer.mp4?v=ht2"); vEl.preload = "auto"; }
           if (typeof vModal.showModal === "function") vModal.showModal(); else vModal.setAttribute("open", "");
           var pr = vEl.play(); if (pr && pr.catch) pr.catch(function () { /* autoplay blocked: the controls are there */ });
           vModal.querySelector("[data-video-close]").focus();
