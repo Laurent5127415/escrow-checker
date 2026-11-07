@@ -240,13 +240,16 @@
 
         <section class="section" id="watch" data-nav="Watch">
           <div class="head">
-            <p class="head__eyebrow">One minute, seven scenes</p>
+            <p class="head__eyebrow">Narrated explainer</p>
             <h2>How escrow, county values and deadlines fit together.</h2>
-            <p class="head__sub">Press Play, or step through at your own pace. All numbers are made up.</p>
+            <p class="head__sub">Watch the narrated video, or step through the silent preview at your own pace. All numbers are made up.</p>
           </div>
           <!-- NARRATED VIDEO SLOT: build_guide.py fills this when explainer.mp4 + explainer_poster.jpg (+ optional explainer.vtt) are in the site folder -->
+          <div class="x-video"><video controls playsinline preload="metadata" poster="explainer_poster.jpg"><source src="explainer.mp4" type="video/mp4" /></video></div>
+          <p class="fineprint">Narrated video, 1 minute 30 seconds, with sound. Tap play to listen.</p>
+          <h3 class="x-silent-h" style="margin:clamp(20px,3vw,32px) 0 8px;font:var(--type-label)">Silent preview: step through at your own pace</h3>
           <div class="x-player" id="player">
-            <div class="x-stage" id="stage" aria-live="polite" aria-roledescription="slideshow" aria-label="Animated explainer">
+            <div class="x-stage" id="stage" aria-live="polite" aria-roledescription="slideshow" aria-label="Silent animated preview">
               <div class="x-scene is-on" data-cap="Your payment went up. Why?">
                 <div><p class="x-scene__num">Scene 1 of 7</p><p class="x-cap">Your payment went up. Why?</p></div>
                 <div class="x-art" aria-hidden="true">
@@ -346,7 +349,7 @@
               <span class="x-time" id="xtime">0:00 / 1:00</span>
             </div>
           </div>
-          <p class="fineprint">A narrated video version is coming soon.</p>
+          <p class="fineprint">Silent preview, no sound. The narrated video above has the full voice-over.</p>
         </section>
 
         <section class="section" id="basics" data-nav="Basics">
@@ -634,7 +637,6 @@
         <a class="x-cta" href="./check/">Open the free checker</a>
         <a class="btn" href="mailto:laurent@kuumba.app?subject=Escrow%20Checker%20feedback" style="min-height:48px;padding-inline:16px;border-radius:var(--r-pill);font:var(--type-label)">Free test · send feedback</a>
         <nav aria-label="Back to sections" data-auto></nav>
-        <a class="badge" href="https://hark.com/" target="_blank" rel="noopener"><span class="hark-mark"></span><span>built by hark</span></a>
       </footer>
     </div>
     <script src="hark.js"></script>
