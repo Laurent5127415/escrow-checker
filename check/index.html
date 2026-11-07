@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; worker-src blob: https://cdn.jsdelivr.net; style-src 'unsafe-inline'; img-src data:; font-src 'none'; connect-src https://cdn.jsdelivr.net https://tad.newedgeservices.com; form-action 'none'; base-uri 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; worker-src blob: https://cdn.jsdelivr.net; style-src 'unsafe-inline'; img-src data: blob:; font-src 'none'; connect-src https://cdn.jsdelivr.net https://tad.newedgeservices.com; form-action 'none'; base-uri 'none'">
 <meta name="color-scheme" content="light dark">
 <title>Escrow &amp; Property Tax Checker · Tarrant County, TX (free test)</title>
 <meta name="description" content="Check your mortgage escrow letter and your Tarrant County appraisal in your browser. Your documents never leave your browser.">
@@ -144,6 +144,18 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--fill-primary);ou
 .drop::before{content:"";width:44px;height:44px;border-radius:50%;background:#1d1d1f url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 16V4M6 10l6-6 6 6M4 20h16'/%3E%3C/svg%3E") center/20px no-repeat}
 .drop:hover,.drop.over{border-color:var(--fill-primary);background:var(--fill-tertiary)}
 .drop input{display:none}
+.ocrprog{display:grid;gap:8px;margin:14px 0 0;padding:14px 16px;border-radius:var(--r-l);background:var(--fill-tertiary)}
+.ocrprog[hidden],.review[hidden]{display:none}
+.ocrprog__t{font:600 15px/1.3 var(--sans)}
+.ocrprog progress{width:100%;height:8px;accent-color:var(--fill-primary)}
+.review{margin:14px 0 18px;padding:16px;border-radius:var(--r-l);border:1.5px solid var(--fill-primary);background:var(--fill-primary-on)}
+.review h3{margin:0 0 4px;font:600 18px/1.3 var(--sans)}
+.rv-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:8px 10px;align-items:center;margin:12px 0}
+.rv-grid input{width:100%;min-width:0;text-align:right;font-variant-numeric:tabular-nums}
+.rv-h{font:600 12px/1.2 var(--sans);color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em;margin-top:6px}
+.rv-l{font-weight:500;margin:0}
+.rv-single{margin-bottom:12px}
+@media (max-width:480px){.rv-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.rv-grid .rv-l{grid-column:1 / -1;margin-top:6px}.rv-grid .rv-sec{grid-column:1 / -1;font-size:13px;color:var(--text-primary)}}
 .drop .big{font:600 17px/1.3 var(--sans)}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px}
 .btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border:0;border-radius:var(--r-pill);font:600 16px/1.2 var(--sans);text-align:center;cursor:pointer;background:var(--fill-primary);color:var(--text-primary-on);text-decoration:none;transition:box-shadow .16s ease,transform .16s ease}
@@ -245,7 +257,7 @@ footer .wrap{padding-top:22px;padding-bottom:34px;font-size:14px;color:var(--tex
   </div>
   <div class="privacy" role="note">
     <p class="privacy__head"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Your documents never leave your browser.</p>
-    <p>Everything runs on this page, on your device. Your letters, pasted pages and numbers are never sent anywhere or saved. If you use the address lookup, only the address you type is sent to Tarrant Appraisal District's public map service; your documents never leave your browser. (The page also downloads two open-source tools: the PDF reader pdf.js and, if you fill the motion form, pdf-lib.)</p>
+    <p>Everything runs on this page, on your device. Your letters, scans, photos, pasted pages and numbers are never uploaded, sent anywhere or saved. If you use the address lookup, only the address you type is sent to Tarrant Appraisal District's public map service; your documents never leave your browser. (The page also downloads open-source tools from jsDelivr: the PDF reader pdf.js, the text reader Tesseract.js when you choose a scan or photo, and pdf-lib if you fill the motion form. They run on your device.)</p>
   </div>
 </section>
 
@@ -264,14 +276,25 @@ footer .wrap{padding-top:22px;padding-bottom:34px;font-size:14px;color:var(--tex
 <section class="panel on" id="p-escrow" role="tabpanel" aria-labelledby="tab-escrow">
   <div class="card">
     <h2 style="margin-top:0">Check your escrow letter</h2>
-    <p class="note" style="margin-top:0">Use the escrow analysis or "payment change" letter from your mortgage servicer (often a PDF in your online account).</p>
-    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a PDF or text file">
-      <input type="file" id="file" accept=".pdf,application/pdf,.txt,text/plain">
-      <div class="big">Drop your PDF here, or tap to choose</div>
-      <div class="note">PDF or .txt · read on your device</div>
+    <p class="note" style="margin-top:0">Use the escrow analysis or "payment change" letter from your mortgage servicer: the PDF from your online account, a scan, or a photo of the paper letter.</p>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a PDF, a scan, a photo or a text file">
+      <input type="file" id="file" accept=".pdf,application/pdf,image/*,.jpg,.jpeg,.png,.webp,.heic,.heif,.txt,text/plain">
+      <div class="big">Drop your letter here, or tap to choose</div>
+      <div class="note">PDF, scan, photo or screenshot (JPG, PNG, HEIC, WebP) or .txt · read on your device</div>
     </div>
+    <div class="ocrprog" id="ocrProg" role="status" aria-live="polite" hidden><span class="ocrprog__t" id="ocrProgT">Reading your document…</span><progress id="ocrBar" max="1"></progress><span class="note">Your file stays on this device; the text reader runs in this page.</span></div>
     <p class="status" id="fileStatus" aria-live="polite"></p>
-    <label for="letterText">Letter text <span class="hint">— filled in from your PDF, or paste it yourself. You can fix anything I misread.</span></label>
+    <div class="review" id="reviewBox" hidden>
+      <h3>Check these numbers</h3>
+      <p class="note" id="rvSrc"></p>
+      <div id="rvFields"></div>
+      <div class="row">
+        <button class="btn" id="runReviewed" type="button">These look right, check my letter</button>
+        <span class="status" id="rvStatus" aria-live="polite"></span>
+      </div>
+      <p class="note">The full text I read is in the box below. Leave a box empty if your letter doesn't show that number.</p>
+    </div>
+    <label for="letterText">Letter text <span class="hint">— filled in from your PDF, scan or photo, or paste it yourself. You can fix anything I misread.</span></label>
     <textarea id="letterText" placeholder="Paste the full text of the letter here…" spellcheck="false"></textarea>
     <details>
       <summary>Optional details</summary>
@@ -2021,36 +2044,264 @@ Enclosures: copy of escrow analysis dated ${d.analysis_date || "[date]"}
     }
     return pdfjsPromise;
   }
-  async function readPdf(file) {
+  async function openPdf(bytes) {
     const pdfjs = await loadPdfJs();
-    const data = new Uint8Array(await file.arrayBuffer());
-    const doc = await pdfjs.getDocument({ data, isEvalSupported: false, disableFontFace: true, verbosity: 0 }).promise;
+    return pdfjs.getDocument({ data: bytes, isEvalSupported: false, disableFontFace: true, verbosity: 0 }).promise;
+  }
+  async function readPdf(bytes) {
+    const doc = await openPdf(bytes.slice());
     const pages = [];
     for (let i = 1; i <= doc.numPages; i++) pages.push(await (await doc.getPage(i)).getTextContent());
     await doc.destroy();
     return L.layoutFromPdfItems(pages);
   }
+
+  // ---------------------------------------------------------------- scans and photos (Tesseract.js OCR, on device)
+  const TESS_VER = "7.0.0", TESS_CORE_VER = "7.0.0";
+  const TESS_URL = `https://cdn.jsdelivr.net/npm/tesseract.js@${TESS_VER}/dist/tesseract.min.js`;
+  const TESS_SRI = "sha384-2BQ3U3OdKOb0Uczxqr41I9UvZkzr4V9Hv8uSzMMZAlmhsFClvdZX5wi5fDCzG+tM";
+  const TESS_WORKER = `https://cdn.jsdelivr.net/npm/tesseract.js@${TESS_VER}/dist/worker.min.js`;
+  const TESS_CORE = `https://cdn.jsdelivr.net/npm/tesseract.js-core@${TESS_CORE_VER}`;
+  const TESS_LANG = "https://cdn.jsdelivr.net/npm/@tesseract.js-data/eng@1.0.0/4.0.0_best_int";
+  const OCR_MAX_PAGES = 6, OCR_LONG_SIDE = 2600, OCR_MIN_WIDTH = 1700;
+  let tessPromise = null;
+  function loadTesseract() {
+    if (window.Tesseract) return Promise.resolve(window.Tesseract);
+    if (!tessPromise) tessPromise = new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = TESS_URL; s.integrity = TESS_SRI; s.crossOrigin = "anonymous"; s.referrerPolicy = "no-referrer";
+      s.onload = () => (window.Tesseract ? resolve(window.Tesseract) : reject(new Error("the text reader didn't load")));
+      s.onerror = () => { tessPromise = null; reject(new Error("couldn't load the text reader")); };
+      document.head.appendChild(s);
+    });
+    return tessPromise;
+  }
+  const prog = { box: $("ocrProg"), text: $("ocrProgT"), bar: $("ocrBar") };
+  function showProgress(msg, frac) {
+    prog.box.hidden = false;
+    if (msg) prog.text.textContent = msg;
+    if (frac === null || frac === undefined) prog.bar.removeAttribute("value"); else prog.bar.value = Math.max(0, Math.min(1, frac));
+  }
+  function hideProgress() { prog.box.hidden = true; }
+  async function ocrCanvases(canvases) {
+    const T = await loadTesseract();
+    let page = 0;
+    const stage = { "loading tesseract core": "Loading the text reader…", "loading language traineddata": "Loading the text reader…", "initializing api": "Loading the text reader…", "recognizing text": "Reading your document…" };
+    const worker = await T.createWorker("eng", 1, {
+      workerPath: TESS_WORKER, corePath: TESS_CORE, langPath: TESS_LANG, cacheMethod: "none", workerBlobURL: true,
+      logger: (m) => {
+        const label = stage[m.status] || "Reading your document…";
+        if (m.status === "recognizing text") {
+          const n = canvases.length;
+          showProgress(n > 1 ? `Reading your document… page ${page + 1} of ${n}` : label, (page + (m.progress || 0)) / n);
+        } else showProgress(label, null);
+      },
+    });
+    const out = [];
+    try {
+      await worker.setParameters({ preserve_interword_spaces: "1", user_defined_dpi: "300" });
+      for (page = 0; page < canvases.length; page++) {
+        const r = await worker.recognize(canvases[page]);
+        out.push(((r && r.data && r.data.text) || "").replace(/\r/g, ""));
+      }
+    } finally { await worker.terminate(); }
+    return cleanOcr(out.join("\n\n"));
+  }
+  // Common OCR slips in money: "S1,420.00" / "$1, 420.00" / "1,420 .00" / letter O in numbers.
+  function cleanOcr(t) {
+    return t
+      .replace(/(^|[\s(])[S§]\s?(?=\d[\d,]*\.\d{2}\b)/gm, "$1$")
+      .replace(/(\d),\s+(\d{3}\b)/g, "$1,$2")
+      .replace(/(\d)\s+\.(\d{2})\b/g, "$1.$2")
+      .replace(/(\d)\.\s+(\d{2})\b/g, "$1.$2")
+      .replace(/(?<=[\d,])[Oo](?=[\d,.]*\d)|(?<=\d)[Oo](?=\.\d{2}\b)/g, "0")
+      .replace(/(\d)[lI](?=[\d,]*\.\d{2}\b)/g, "$11")
+      .replace(/[ \t]+$/gm, "");
+  }
+  function sizedCanvas(w, h) {
+    let k = 1;
+    const long = Math.max(w, h);
+    if (long > OCR_LONG_SIDE) k = OCR_LONG_SIDE / long;
+    else if (w < OCR_MIN_WIDTH) k = Math.min(3, OCR_MIN_WIDTH / w);
+    const c = document.createElement("canvas");
+    c.width = Math.max(1, Math.round(w * k)); c.height = Math.max(1, Math.round(h * k));
+    return { c, k };
+  }
+  async function decodeImage(file) {
+    if (typeof createImageBitmap === "function") {
+      try { return await createImageBitmap(file, { imageOrientation: "from-image" }); } catch (_) { /* fall back to <img> */ }
+    }
+    return await new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file), img = new Image();
+      img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("decode")); };
+      img.src = url;
+    });
+  }
+  async function imageToCanvas(file) {
+    let img;
+    try { img = await decodeImage(file); }
+    catch (_) {
+      const heic = /\.(heic|heif)$/i.test(file.name) || /hei[cf]/i.test(file.type);
+      throw new Error(heic ? "This browser can't open HEIC photos. Take a screenshot of the photo, or set your camera to \"Most Compatible\" (JPEG), and choose that instead."
+        : "This image couldn't be opened. Try a JPEG or PNG photo or screenshot.");
+    }
+    const w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+    const { c } = sizedCanvas(w, h);
+    const ctx = c.getContext("2d");
+    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+    if (img.close) img.close();
+    return c;
+  }
+  async function pdfToCanvases(bytes) {
+    const doc = await openPdf(bytes.slice());
+    const out = [];
+    try {
+      const n = Math.min(doc.numPages, OCR_MAX_PAGES);
+      for (let i = 1; i <= n; i++) {
+        showProgress(`Getting page ${i} of ${n} ready…`, null);
+        const page = await doc.getPage(i);
+        const v1 = page.getViewport({ scale: 1 });
+        const { c, k } = sizedCanvas(v1.width, v1.height);
+        const ctx = c.getContext("2d");
+        ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+        await page.render({ canvasContext: ctx, viewport: page.getViewport({ scale: k }), background: "#ffffff" }).promise;
+        out.push(c);
+      }
+    } finally { await doc.destroy(); }
+    return out;
+  }
+  function anyNumbers(d) {
+    return [d.pi_new, d.escrow_new, d.total_new, d.total_old, d.annual_new, d.projected_low_point, d.shortage].some((v) => v !== null && v !== undefined) ||
+      Object.keys(d.disbursements || {}).length > 0;
+  }
+
+  // ---------------------------------------------------------------- "Check these numbers" (after OCR)
+  const REVIEW_FIELDS = [
+    ["Principal & interest", "pi_old", "pi_new"],
+    ["Escrow deposit", "escrow_old", "escrow_new"],
+    ["Shortage/surplus repayment", "shortage_monthly_old", "shortage_monthly_new"],
+    ["Total monthly payment", "total_old", "total_new"],
+  ];
+  const REVIEW_SINGLE = [
+    ["projected_low_point", "Lowest projected balance"], ["required_low_point", "Required cushion (low point)"],
+    ["shortage", "Shortage"], ["surplus", "Surplus"], ["shortage_spread_months", "Shortage spread over (months)"],
+  ];
+  const DEFAULT_DISB = [["county_tax", "County tax", "tax"], ["school_tax", "School tax", "tax"], ["city_tax", "City tax", "tax"], ["homeowners_insurance", "Homeowners insurance", "insurance"]];
+  let reviewBase = null;
+  const fv = (x, count) => (x === null || x === undefined ? "" : count ? String(Math.round(x)) : L.fnum(x, 2));
+  function moneyInput(id, label, val, count) {
+    return `<input type="text" inputmode="${count ? "numeric" : "decimal"}" id="${id}" aria-label="${esc(label)}" value="${esc(fv(val, count))}" placeholder="—" autocomplete="off">`;
+  }
+  function showReview(d, src) {
+    reviewBase = d;
+    const disb = Object.entries(d.disbursements || {});
+    const rows = disb.length ? disb.map(([k, v]) => [k, v.label, v.category]) : DEFAULT_DISB;
+    let h = `<div class="rv-grid" role="group" aria-label="Monthly payment"><span class="rv-h rv-sec">Monthly payment</span><span class="rv-h">Current</span><span class="rv-h">New</span>`;
+    for (const [label, a, b] of REVIEW_FIELDS)
+      h += `<label class="rv-l" for="rv_${a}">${esc(label)}</label>${moneyInput("rv_" + a, label + ", current", d[a])}${moneyInput("rv_" + b, label + ", new", d[b])}`;
+    h += `<span class="rv-h rv-sec">Yearly bills</span><span class="rv-h">Last year</span><span class="rv-h">Next year</span>`;
+    rows.forEach(([k, label], i) => {
+      const v = (d.disbursements || {})[k] || {};
+      h += `<label class="rv-l" for="rvd_${i}_o">${esc(titleish(label))}</label>${moneyInput(`rvd_${i}_o`, label + ", last year", v.old)}${moneyInput(`rvd_${i}_n`, label + ", next year", v.new)}`;
+    });
+    h += `<label class="rv-l" for="rv_annual_old"><b>Total yearly bills</b></label>${moneyInput("rv_annual_old", "Total yearly bills, last year", d.annual_old)}${moneyInput("rv_annual_new", "Total yearly bills, next year", d.annual_new)}</div>`;
+    h += `<div class="grid rv-single">` + REVIEW_SINGLE.map(([k, label]) => `<div><label for="rv_${k}">${esc(label)}</label>${moneyInput("rv_" + k, label, d[k], k === "shortage_spread_months")}</div>`).join("") + `</div>`;
+    $("rvFields").innerHTML = h;
+    $("rvFields").dataset.rows = JSON.stringify(rows);
+    $("rvSrc").textContent = src;
+    $("reviewBox").hidden = false;
+    $("reviewBox").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  function titleish(s) { s = String(s || "").trim(); return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s; }
+  function reviewedData() {
+    const d = JSON.parse(JSON.stringify(reviewBase || L.parse("")));
+    for (const [, a, b] of REVIEW_FIELDS) { d[a] = num($("rv_" + a).value); d[b] = num($("rv_" + b).value); }
+    for (const [k] of REVIEW_SINGLE) d[k] = num($("rv_" + k).value);
+    if (d.shortage_spread_months !== null) d.shortage_spread_months = Math.round(d.shortage_spread_months);
+    const rows = JSON.parse($("rvFields").dataset.rows || "[]"), disb = {};
+    rows.forEach(([k, label, cat], i) => {
+      const o = num($(`rvd_${i}_o`).value), n = num($(`rvd_${i}_n`).value);
+      if (o !== null || n !== null) disb[k] = { label, category: cat, old: o, new: n };
+    });
+    d.disbursements = disb;
+    d.annual_old = num($("rv_annual_old").value); d.annual_new = num($("rv_annual_new").value);
+    const vs = Object.values(disb);
+    if (d.annual_new === null && vs.length) d.annual_new = Math.round(vs.reduce((s, v) => s + (v.new || 0), 0) * 100) / 100 || null;
+    if (d.annual_old === null && vs.some((v) => v.old !== null)) d.annual_old = Math.round(vs.reduce((s, v) => s + (v.old || 0), 0) * 100) / 100 || null;
+    if (d.total_new === null && d.pi_new !== null && d.escrow_new !== null) d.total_new = Math.round((d.pi_new + d.escrow_new + (d.shortage_monthly_new || 0)) * 100) / 100;
+    if (d.shortage_monthly_old === null) d.shortage_monthly_old = 0;
+    if (d.shortage_monthly_new === null) d.shortage_monthly_new = 0;
+    d.notes = (d.notes || []).concat(["Numbers read from a scan or photo and checked by you."]);
+    return d;
+  }
+  function analyzeData(d, text) {
+    const flags = L.check(d, $("priorDate").value || null, $("delinquent").checked ? true : null);
+    const bd = L.breakdown(d), steps = L.nextSteps(d, flags);
+    const name = $("yourName").value.trim() || "[Your full name]";
+    const md = L.reportMd(d, flags, bd, steps, (lastFileName || "scan") + " (read from a scan or photo)");
+    const noe = L.noticeOfError(d, flags, name);
+    const full = md + (noe ? "\n\n## Draft notice of error (template — you send it yourself)\n\n```\n" + noe + "```\n" : "");
+    lastEscrow = { data: d, text };
+    const proj = L.escrowProjectionFromLetter(d);
+    if (proj) $("cProj").value = L.fnum(proj, 2);
+    renderEscrow({ data: d, flags, breakdown: bd, next_steps: steps, report_md: full, notice_of_error: noe });
+  }
+  $("runReviewed").addEventListener("click", () => {
+    const d = reviewedData();
+    if (!anyNumbers(d)) { setStatus("rvStatus", "Type at least the new monthly payment numbers from your letter first.", true); return; }
+    setStatus("rvStatus", "");
+    analyzeData(d, $("letterText").value);
+  });
+
+  const isImage = (f) => /^image\//i.test(f.type) || /\.(jpe?g|png|webp|gif|bmp|heic|heif|tiff?)$/i.test(f.name);
+  const NOTHING_READ = "I couldn't read the numbers from this. Try another photo in good, even light, with the page flat, straight-on and filling the frame (no shadows or glare), or use a screenshot or the PDF from your servicer's website. You can also type the numbers from your letter below.";
+  async function ocrFlow(file, getCanvases, kind) {
+    $("reviewBox").hidden = true;
+    showProgress("Reading your document…", null);
+    setStatus("fileStatus", `Reading ${kind} on your device. This can take up to a minute…`);
+    const canvases = await getCanvases();
+    const text = await ocrCanvases(canvases);
+    hideProgress();
+    $("letterText").value = text;
+    const d = L.parse(text);
+    if (text.replace(/\s/g, "").length < 40 || !anyNumbers(d)) {
+      setStatus("fileStatus", NOTHING_READ, true);
+      showReview(d, "Nothing readable was found, so these are blank. Type them from your letter, or try a clearer photo.");
+      return;
+    }
+    setStatus("fileStatus", `Read ${file.name} on your device. Check the numbers below before I run the checks.`);
+    showReview(d, `Read from your ${kind}. Scans and photos can be misread, so compare each number with your letter and fix any that are wrong.`);
+  }
   async function handleFile(file) {
     if (!file) return;
     lastFileName = file.name;
     $("escrowOut").innerHTML = "";
+    $("reviewBox").hidden = true; hideProgress();
     const isPdf = /\.pdf$/i.test(file.name) || file.type === "application/pdf";
     try {
+      if (isImage(file)) { await ocrFlow(file, async () => [await imageToCanvas(file)], "photo"); return; }
       let text;
       if (isPdf) {
         setStatus("fileStatus", `Reading ${file.name} on your device…`);
-        text = await readPdf(file);
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        text = await readPdf(bytes);
+        if (text.replace(/\s/g, "").length < 200) { await ocrFlow(file, () => pdfToCanvases(bytes), "scanned PDF"); return; }
       } else text = await file.text();
       $("letterText").value = text;
       if (text.replace(/\s/g, "").length < 200) {
-        setStatus("fileStatus", "I could barely find any text in this file. It may be a scanned image, which this page can't read. Please paste or type the letter's numbers into the box below.", true);
+        setStatus("fileStatus", "I could barely find any text in this file. Please paste or type the letter's numbers into the box below, or choose a photo or scan of the letter.", true);
         return;
       }
       setStatus("fileStatus", `Read ${file.name}. Checking…`);
       runEscrow();
       setStatus("fileStatus", `Read ${file.name} on your device. The text is in the box below if you want to check it.`);
     } catch (e) {
-      setStatus("fileStatus", "Couldn't open the PDF reader or the file" + (e && e.message ? ` (${e.message})` : "") + ". You can paste the letter text into the box below instead.", true);
+      hideProgress();
+      const msg = e && e.message ? e.message : "";
+      if (/HEIC|couldn't be opened/.test(msg)) setStatus("fileStatus", msg, true);
+      else setStatus("fileStatus", "Couldn't read this file" + (msg ? ` (${msg})` : "") + ". Check your connection and try again, or paste or type the letter's numbers into the box below.", true);
     }
   }
   const drop = $("drop"), fileIn = $("file");
@@ -2091,7 +2342,7 @@ Enclosures: copy of escrow analysis dated ${d.analysis_date || "[date]"}
     if (bd.total_change !== undefined && bd.total_change !== null)
       h += `<div class="pay"><span>Monthly payment: ${money(d.total_old)} → <b>${money(d.total_new)}</b></span><span>${bd.total_change >= 0 ? "+" : ""}${money(bd.total_change)}/month</span>` +
         (d.total_new_pay_in_full ? `<span>${money(d.total_new_pay_in_full)} if you pay the shortage in full</span>` : "") + `</div>`;
-    if (!found) h += `<p class="note">Check that you pasted the whole letter, including the "new payment" table. Scanned (image) letters can't be read here.</p>`;
+    if (!found) h += `<p class="note">Check that you pasted the whole letter, including the "new payment" table. For a scan or photo, choose the file above and check the numbers I read.</p>`;
     h += `</div>`;
 
     if (bd.rows && bd.rows.length) {
