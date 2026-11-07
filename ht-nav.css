@@ -1,0 +1,46 @@
+/* HomeTally: the guide's header (site bar + glass section nav + theme toggle) for pages that don't load hark.css (the checker).
+   Values copied from hark.css so the header looks the same on every page. */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+.ht-chrome {
+  --fill-segment: light-dark(#3a3a3c, #e2e2e4);
+  --stroke-primary-on: light-dark(#f5f5f71a, #1d1d1f1a);
+  --hover-wash: light-dark(#1d1d1f0d, #f5f5f70d);
+  --hover-wash-primary-on: light-dark(#f9f9fa26, #1d1d1f14);
+  --text-secondary-on: light-dark(#aeaeb2, #5c5c60);
+  --mat-inverse: color-mix(in srgb, var(--fill-primary) 86%, transparent);
+  --hark-blur: blur(50px) saturate(1.6);
+  --hark-shadow: 0 8px 40px #1d1d1f1f;
+  --weight-medium: 500;
+  --type-label: 500 14px/1.3 var(--sans);
+  --page-max: 1120px;
+  --gutter: clamp(16px, 3vw, 32px);
+  --tap: 44px;
+  --r-pill: 100px;
+}
+.ht-top { max-width: 1120px; margin: 0 auto; padding: 12px clamp(16px, 3vw, 32px) 0; }
+.ht-navbar.nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); z-index: 40; width: fit-content; margin: 16px auto 0; }
+.ht-top .sitebar { position: static; margin: 0; padding: 0; max-width: none; }
+.ht-top .sitebar__in { background: var(--fill-tertiary); color: var(--text-primary); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.ht-top .sitebar__links { background: var(--hover-wash); }
+.ht-top .sitebar__links a { color: var(--text-secondary); font: var(--type-label); }
+.ht-top .sitebar__links a:hover { color: var(--text-primary); }
+.ht-top .sitebar__links a[aria-current="page"] { background: var(--fill-primary); color: var(--text-primary-on); }
+.ht-top .sitebar__brand { font: var(--type-label); color: var(--text-primary); }
+.ht-top .sitebar__fb { background: var(--fill-primary); color: var(--text-primary-on); }
+.ht-top .sitebar__fb:hover { box-shadow: inset 0 0 0 100px var(--hover-wash-primary-on); }
+.ht-navbar.glass { background: var(--mat-inverse); -webkit-backdrop-filter: var(--hark-blur); backdrop-filter: var(--hark-blur); border: 1px solid var(--stroke-primary-on); }
+.ht-navbar.nav { justify-self: center; max-width: 100%; display: flex; align-items: center; gap: 6px; padding: 5px; border-radius: var(--r-pill); box-shadow: var(--hark-shadow); }
+.ht-navbar :focus-visible { outline-color: var(--fill-primary-on); }
+.ht-navbar .seg { display: flex; min-width: 0; overflow-x: auto; scrollbar-width: none; border-radius: var(--r-pill); background: var(--fill-segment); }
+.ht-navbar .seg::-webkit-scrollbar { display: none; }
+.ht-navbar .seg a { flex: none; padding: 8px 14px; border-radius: var(--r-pill); font: var(--type-label); color: var(--text-secondary-on); text-decoration: none; white-space: nowrap; }
+.ht-navbar .seg a:hover { color: var(--text-primary-on); }
+.ht-navbar .seg a[aria-current="true"] { background: var(--fill-primary-on); color: var(--text-primary); }
+.ht-navbar .theme-btn { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border: 0; border-radius: 50%; background: var(--hover-wash-primary-on); color: var(--text-primary-on); cursor: pointer; }
+.ht-navbar .theme-btn:hover { box-shadow: inset 0 0 0 100px var(--hover-wash-primary-on); }
+.ht-navbar .theme-btn::before { content: ""; width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px currentColor; background: linear-gradient(to right, light-dark(currentColor, transparent) 50%, light-dark(transparent, currentColor) 50%); }
+@media (max-width: 599px) {
+  .ht-navbar .seg a { display: flex; align-items: center; min-height: var(--tap); }
+  .ht-navbar .theme-btn { width: var(--tap); height: var(--tap); }
+}
