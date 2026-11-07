@@ -241,7 +241,7 @@
           <div class="head">
             <p class="head__eyebrow">Narrated explainer · 1 min 30 s</p>
             <h2>How escrow, county values and deadlines fit together.</h2>
-            <p class="head__sub">A short narrated video with sound. All numbers in it are made up.</p>
+            <p class="head__sub">Watch the narrated video, or step through the silent preview at your own pace. All numbers are made up.</p>
           </div>
           <div class="x-ctas">
             <button class="ht-videobtn" type="button" data-video-open aria-haspopup="dialog">
@@ -249,6 +249,109 @@
               <span>Watch the narrated video<small>1 minute 30 seconds, with sound</small></span>
             </button>
           </div>
+          <h3 class="x-silent-h" style="margin:clamp(20px,3vw,32px) 0 8px;font:var(--type-label)">Silent preview: step through at your own pace</h3>
+          <div class="x-player" id="player">
+            <div class="x-stage" id="stage" aria-live="polite" aria-roledescription="slideshow" aria-label="Silent animated preview">
+              <div class="x-scene is-on" data-cap="Your payment went up. Why?">
+                <div><p class="x-scene__num">Scene 1 of 7</p><p class="x-cap">Your payment went up. Why?</p></div>
+                <div class="x-art" aria-hidden="true">
+                  <div class="x-pay">
+                    <div class="x-pay__bar">
+                      <span class="x-seg x-seg--loan">Loan<b>$1,400</b></span>
+                      <span class="x-seg x-seg--tax">Taxes<b>$450 <span class="x-up">→ $700</span></b></span>
+                      <span class="x-seg x-seg--ins">Insurance<b>$150</b></span>
+                    </div>
+                    <p class="x-pay__total">Monthly payment <s>$2,000</s> <span class="x-up">→ $2,250</span></p>
+                  </div>
+                </div>
+              </div>
+              <div class="x-scene" hidden data-cap="Taxes come from the county's value of your home.">
+                <div><p class="x-scene__num">Scene 2 of 7</p><p class="x-cap">Taxes come from the county's value of your home.</p></div>
+                <div class="x-art" aria-hidden="true">
+                  <div class="x-valued">
+                    <svg class="x-house" viewBox="0 0 200 160">
+                      <path class="x-roof" pathLength="1" d="M14 82 L100 18 L186 82" />
+                      <path pathLength="1" d="M36 70 V150 H164 V70" />
+                      <path pathLength="1" d="M88 150 V108 H112 V150" />
+                      <path pathLength="1" d="M52 92 H78 V114 H52 Z" />
+                      <path pathLength="1" d="M122 92 H148 V114 H122 Z" />
+                    </svg>
+                    <span class="x-tag"><small>TAD value</small>$400,000</span>
+                    <span class="x-paid x-in x-d2">Bought for $300,000</span>
+                  </div>
+                </div>
+              </div>
+              <div class="x-scene" hidden data-cap="Too high? If it's 25% or more above what it's really worth, Texas gives homesteads a fix.">
+                <div><p class="x-scene__num">Scene 3 of 7</p><p class="x-cap">Too high? If it's 25% or more above what it's really worth, Texas gives homesteads a fix.</p></div>
+                <div class="x-art" aria-hidden="true">
+                  <div class="x-meter">
+                    <div class="x-meter__track"><span class="x-meter__fill"></span><span class="x-meter__line"></span></div>
+                    <div class="x-meter__scale"><span style="left:0">1.00×</span><span style="left:50%">1.25× line</span><span style="left:100%">1.50×</span></div>
+                    <p class="x-meter__read">$400,000 ÷ $300,000 = <b>1.33×</b></p>
+                  </div>
+                </div>
+              </div>
+              <div class="x-scene" hidden data-cap="Step 1: Check your escrow letter.">
+                <div><p class="x-scene__num">Scene 4 of 7</p><p class="x-cap">Step 1: Check your escrow letter.</p></div>
+                <div class="x-art" aria-hidden="true">
+                  <div class="x-tool">
+                    <div class="x-tool__bar"><i></i><i></i><i></i><span>HomeTally</span></div>
+                    <div class="x-tool__body">
+                      <div class="x-letter">
+                        <h4>Annual escrow statement</h4>
+                        <p class="x-row">Property tax <b>$5,400</b><span class="x-check x-popin x-d2">✓</span></p>
+                        <p class="x-row">Insurance <b>$1,800</b><span class="x-check x-popin x-d3">✓</span></p>
+                        <p class="x-row">Cushion <b>2 months</b><span class="x-check x-popin x-d4">✓</span></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="x-scene" hidden data-cap="Step 2: Check your county value.">
+                <div><p class="x-scene__num">Scene 5 of 7</p><p class="x-cap">Step 2: Check your county value.</p></div>
+                <div class="x-art" aria-hidden="true">
+                  <div class="x-tool">
+                    <div class="x-tool__bar"><i></i><i></i><i></i><span>HomeTally</span></div>
+                    <div class="x-tool__body">
+                      <div class="x-field"><span class="x-input"><span class="x-type">100 Sample Ln, Fort Worth</span></span><span class="x-fakebtn">Look up</span></div>
+                      <p class="x-row x-in x-d4">County value <b>$400,000</b></p>
+                      <p class="x-row x-in x-d5">You paid <b>$300,000</b></p>
+                      <p class="x-row x-in x-d6">Compared <b class="x-bad">1.33× too high</b></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="x-scene" hidden data-cap="Step 3: Get your next step.">
+                <div><p class="x-scene__num">Scene 6 of 7</p><p class="x-cap">Step 3: Get your next step.</p></div>
+                <div class="x-art" aria-hidden="true">
+                  <div class="x-flags">
+                    <p class="x-flag x-in x-d1"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 2h2v20H5zM8 3h11l-3 5 3 5H8z"/></svg><span>Protest in May<small>Value looks too high</small></span></p>
+                    <p class="x-flag x-in x-d3"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 2h2v20H5zM8 3h11l-3 5 3 5H8z"/></svg><span>Homestead exemption<small>You live here but have none</small></span></p>
+                    <p class="x-flag x-in x-d5"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 2h2v20H5zM8 3h11l-3 5 3 5H8z"/></svg><span>Form 50-869 motion<small>25% or more over, on a homestead</small></span></p>
+                  </div>
+                </div>
+              </div>
+              <div class="x-scene" hidden data-cap="Step 4: Put the deadlines on your calendar.">
+                <div><p class="x-scene__num">Scene 7 of 7</p><p class="x-cap">Step 4: Put the deadlines on your calendar.</p></div>
+                <div class="x-art" aria-hidden="true">
+                  <div class="x-cals">
+                    <div class="x-cal"><p class="x-cal__m">Apr</p><p class="x-cal__d">30</p><p class="x-cal__w">Homestead</p><span class="x-check x-popin">✓</span></div>
+                    <div class="x-cal"><p class="x-cal__m">May</p><p class="x-cal__d">15</p><p class="x-cal__w">Protest</p><span class="x-check x-popin">✓</span></div>
+                    <div class="x-cal"><p class="x-cal__m">Jan</p><p class="x-cal__d">31</p><p class="x-cal__w">Form 50-869</p><span class="x-check x-popin">✓</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="x-progress" aria-hidden="true"><span id="xbar"></span></div>
+            <div class="x-controls">
+              <button class="x-play" id="xplay" type="button" aria-label="Play explainer"><span aria-hidden="true" id="xicon">▶</span> <span id="xlabel">Play</span></button>
+              <button class="x-step" id="xprev" type="button" aria-label="Previous scene">‹</button>
+              <button class="x-step" id="xnext" type="button" aria-label="Next scene">›</button>
+              <div class="x-dots" id="xdots" role="group" aria-label="Choose a scene"></div>
+              <span class="x-time" id="xtime">0:00 / 1:00</span>
+            </div>
+          </div>
+          <p class="fineprint">Silent preview, no sound. Tap "Watch the narrated video" for the full voice-over.</p>
         </section>
 
         <section class="section" id="basics" data-nav="Basics">
@@ -599,6 +702,86 @@
     </script>
     <script>
       (function () {
+        /* ---------- Explainer player ---------- */
+        var stage = document.getElementById("stage");
+        var scenes = Array.prototype.slice.call(stage.querySelectorAll(".x-scene"));
+        var N = scenes.length, D = 8500, TOTAL = N * D;
+        var playBtn = document.getElementById("xplay"), icon = document.getElementById("xicon"), label = document.getElementById("xlabel");
+        var prev = document.getElementById("xprev"), next = document.getElementById("xnext");
+        var dotsBox = document.getElementById("xdots"), bar = document.getElementById("xbar");
+        var timeEl = document.getElementById("xtime");
+        var cur = 0, t = 0, playing = false, last = 0, started = false;
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        var dots = scenes.map(function (s, k) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.setAttribute("aria-label", "Scene " + (k + 1) + ": " + s.getAttribute("data-cap"));
+          b.addEventListener("click", function () { go(k, true); });
+          dotsBox.appendChild(b);
+          return b;
+        });
+
+        function fmt(ms) { var s = Math.round(ms / 1000); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+        function paint() {
+          var done = Math.min(cur * D + t, TOTAL);
+          bar.style.width = (done / TOTAL) * 100 + "%";
+          timeEl.textContent = fmt(done) + " / " + fmt(TOTAL);
+        }
+        function go(n, manual) {
+          cur = Math.max(0, Math.min(N - 1, n)); t = 0;
+          scenes.forEach(function (s, k) {
+            s.classList.remove("is-on");
+            s.hidden = k !== cur;
+          });
+          void scenes[cur].offsetWidth;
+          scenes[cur].classList.add("is-on");
+          if (manual) stage.classList.remove("is-frozen");
+          dots.forEach(function (d, k) { if (k === cur) d.setAttribute("aria-current", "step"); else d.removeAttribute("aria-current"); });
+          prev.disabled = cur === 0; next.disabled = cur === N - 1;
+          paint();
+        }
+        function setPlaying(p) {
+          playing = p;
+          icon.textContent = p ? "❚❚" : "▶";
+          label.textContent = p ? "Pause" : "Play";
+          playBtn.setAttribute("aria-label", (p ? "Pause" : "Play") + " explainer");
+          stage.classList.toggle("is-frozen", !p);
+          if (p) { last = performance.now(); requestAnimationFrame(tick); }
+        }
+        function tick(now) {
+          if (!playing) return;
+          t += now - last; last = now;
+          if (t >= D) {
+            if (cur < N - 1) go(cur + 1);
+            else { t = D; paint(); setPlaying(false); stage.classList.remove("is-frozen"); return; }
+          }
+          paint();
+          requestAnimationFrame(tick);
+        }
+        playBtn.addEventListener("click", function () {
+          started = true;
+          if (!playing && cur === N - 1 && t >= D) go(0);
+          setPlaying(!playing);
+        });
+        prev.addEventListener("click", function () { go(cur - 1, true); });
+        next.addEventListener("click", function () { go(cur + 1, true); });
+        stage.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowRight") go(cur + 1, true);
+          if (e.key === "ArrowLeft") go(cur - 1, true);
+        });
+        stage.tabIndex = 0;
+        go(0);
+        stage.classList.remove("is-frozen");
+        if (!reduce && "IntersectionObserver" in window) {
+          var io = new IntersectionObserver(function (es) {
+            es.forEach(function (e) {
+              if (e.isIntersecting && !started) { started = true; go(0); setPlaying(true); io.disconnect(); }
+            });
+          }, { threshold: 0.6 });
+          io.observe(stage);
+        }
+
         /* ---------- Narrated video modal (video loads only when opened) ---------- */
         var vModal = document.getElementById("videoModal"), vEl = document.getElementById("videoEl"), vOpener = null;
         function vOpen(e) {
